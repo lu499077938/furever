@@ -1,0 +1,65 @@
+---
+description: 宠光（PetGlow）后端通用开发规范，适用于所有 Python 文件，AI 生成代码必须严格遵守。
+globs: backend/**/*.py
+---
+
+## 分层架构强制规范
+
+- Router 层（`routers/`）只做：接收请求参数、调用 Service、返回响应。禁止在 Router 中写任何业务逻辑。
+- Service 层（`services/`）承载所有业务规则，调用 Repository 获取数据。
+- Repository 层（`repositories/`）只做数据访问，不含业务逻辑。
+- 禁止跨层调用：Router 不得直接调用 Repository；Service 不得直接操作 HTTP 请求/响应对象。
+
+## DTO / Schema 强制规范
+
+- 接口参数超过 2 个时，必须定义 Pydantic Schema 作为请求体（命名规则：`XxxReq`）。
+- 接口响应必须定义 Pydantic Schema（命名规则：`XxxResp`）。
+- 禁止使用 `dict` 或裸 `**kwargs` 传递多个业务参数，必须用 Schema 封装。
+- 所有 Schema 放在 `app/schemas/` 对应模块文件中，禁止在 Router 或 Service 文件内定义 Schema。
+- 禁止使用任何形式的对象属性批量复制（如 Python 的 `__dict__` 赋值、`vars()` 复制、`model_copy` 滥用）替代显式字段赋值。每个字段必须明确赋值。
+
+## 命名规范
+
+- 请求 Schema：`LoginReq`、`PostCreateReq`、`UpdateNicknameReq`
+- 响应 Schema：`TokenResp`、`PostDetailResp`、`CheckinResp`
+- 分页响应统一用 `app/schemas/common.py` 中的 `PageResp[T]` 泛型
+- Service 方法命名：动词+名词，如 `create_post`、`get_post_detail`、`toggle_like`
+- Repository 方法命名：`find_by_id`、`find_list`、`create`、`update`、`soft_delete`
+
+## 统一响应格式
+
+- 所有接口必须使用 `app/core/response.py` 中的 `success(data)` / `fail(msg, code)` 工具函数返回响应。
+- 禁止在 Router 中直接 `return {"code": 0, ...}`，必须通过工具函数。
+- 响应格式固定为：`{"code": 0, "msg": "ok", "data": ...}`
+
+## 错误处理规范
+
+- 使用 guard clause（早返回）处理错误，禁止深层嵌套 if-else。
+- 业务错误统一抛出 `HTTPException`，并附带明确的 `detail` 信息。
+- 不得吞掉异常（空 except 块）；捕获异常后必须记录日志或重新抛出。
+- 参数校验错误由 Pydantic 自动处理，不需要手动校验已在 Schema 中定义的字段。
+
+## 逻辑删除规范
+
+- 禁止对任何业务表执行物理删除（`DELETE FROM ...`）。
+- 删除操作统一执行：`UPDATE pet_xxx SET is_deleted=1, updated_by=<user_id>, updated_at=NOW() WHERE id=<id>`。
+- 所有查询必须在 WHERE 条件中加入 `is_deleted=0` 过滤，ORM 查询使用 `.filter(Model.is_deleted == 0)`。
+- Repository 的 `soft_delete` 方法必须同时更新 `updated_by` 和 `updated_at`。
+
+## 公共字段填充规范
+
+- 创建记录时必须填充：`created_by=当前用户id`、`updated_by=当前用户id`。
+- 更新记录时必须填充：`updated_by=当前用户id`、`updated_at` 由数据库自动更新。
+- 系统自动触发的操作（如通知创建）`created_by=0`、`updated_by=0`。
+
+## 幂等性规范
+
+- 点赞、收藏、签到等操作依赖数据库唯一约束保证幂等，重复操作返回当前状态而非报错。
+- 发帖、评论等创建接口，Service 层必须校验请求体中的 `client_id`，30秒内相同 `client_id` 直接返回上次结果（使用 `app/utils/idempotency.py`）。
+
+## 其他禁止项
+
+- 禁止硬编码任何配置值（密钥、URL、数据库连接等），必须从 `app/core/config.py` 读取。
+- 禁止在代码中打印敏感信息（密码、Token）。
+- 禁止省略类型注解：所有函数参数和返回值必须有类型注解。
+- 禁止生成"TODO: 实现此方法"的占位代码，必须给出完整实现。

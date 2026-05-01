@@ -1,0 +1,1 @@
+import{_ as s,o as a,c as t,q as r}from"./index-BSY8jS6o.js";const c=s({__name:"Avatar",props:{src:{type:String,default:""}},setup:s=>(c,e)=>{const o=r;return a(),t(o,{class:"avatar",src:s.src||"https://placehold.co/80x80",mode:"aspectFill"},null,8,["src"])}},[["__scopeId","data-v-77e42569"]]);export{c as A};

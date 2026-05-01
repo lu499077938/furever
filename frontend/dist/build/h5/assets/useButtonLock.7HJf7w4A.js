@@ -1,0 +1,1 @@
+import{e as a}from"./index-BSY8jS6o.js";function e(){const e=a(!1),n=async a=>{if(!e.value){e.value=!0;try{await a()}finally{e.value=!1}}};return{locked:e,run:n,isLocked:e,runWithLock:n}}export{e as u};

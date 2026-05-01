@@ -1,0 +1,21 @@
+{
+  "name": "PetGlow",
+  "appid": "__UNI__PETGLOW",
+  "description": "宠光宠物社区",
+  "versionName": "1.0.0",
+  "versionCode": "100",
+  "transformPx": false,
+  "mp-weixin": {
+    "appid": "",
+    "setting": {
+      "urlCheck": false
+    },
+    "usingComponents": true
+  },
+  "h5": {
+    "title": "PetGlow",
+    "router": {
+      "mode": "hash"
+    }
+  }
+}

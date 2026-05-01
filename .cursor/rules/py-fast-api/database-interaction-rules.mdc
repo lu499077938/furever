@@ -1,0 +1,12 @@
+---
+description: 宠光（PetGlow）数据库交互规范，适用于 repositories 和 models 目录。
+globs: backend/app/{repositories,models}/**/*.py
+---
+- 使用 SQLAlchemy（同步模式）+ PyMySQL，连接池 pool_size=5, max_overflow=5。
+- 所有 ORM 模型继承 `app/models/base.py` 的 BaseModel，包含公共字段（id/created_at/updated_at/created_by/updated_by/is_deleted）。
+- 禁止物理删除，所有删除操作使用逻辑删除（`soft_delete`：设置 is_deleted=1）。
+- 所有查询必须过滤 `is_deleted=0`，使用 `.filter(Model.is_deleted == 0)`。
+- 创建记录时自动填充 `created_by` 和 `updated_by`（当前用户 id，系统操作填 0）。
+- 更新记录时自动填充 `updated_by`（当前用户 id）。
+- 分页查询必须返回 `tuple[list, int]`（数据列表 + 总数）。
+- 禁止在 Repository 中使用原生 SQL 字符串拼接，必须使用 ORM 查询构造器或参数化查询。

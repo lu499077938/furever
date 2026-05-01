@@ -1,0 +1,1 @@
+import{_ as s,o as a,c as o,w as e,d as n,i as t}from"./index-ffM8F_u_.js";const d=s({},[["render",function(s,d){const r=t;return a(),o(r,{class:"loading"},{default:e(()=>[n("加载中...")]),_:1})}],["__scopeId","data-v-3eb31079"]]);export{d as L};

@@ -1,0 +1,1 @@
+import{r as t}from"./request.BO0j8edD.js";const o=o=>t({url:"/notifications",method:"GET",data:o}),a=()=>t({url:"/notifications/unread-count",method:"GET"}),r=()=>t({url:"/notifications/read-all",method:"PUT"});export{o as n,r,a as u};

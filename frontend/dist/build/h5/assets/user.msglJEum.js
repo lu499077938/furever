@@ -1,0 +1,1 @@
+import{C as s}from"./index-Dc5uI44e.js";const e=()=>s({url:"/users/me",method:"GET"}),a=e=>s({url:"/users/me/nickname",method:"PUT",data:e}),m=e=>s({url:"/users/me/password",method:"PUT",data:e});export{m as a,e as m,a as u};

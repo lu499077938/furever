@@ -1,0 +1,1 @@
+import{e as a}from"./index-Du8zD5Zu.js";function e(){const e=a(!1),n=async a=>{if(!e.value){e.value=!0;try{await a()}finally{e.value=!1}}};return{locked:e,run:n,isLocked:e,runWithLock:n}}export{e as u};

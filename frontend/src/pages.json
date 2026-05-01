@@ -1,0 +1,37 @@
+{
+  "pages": [
+    { "path": "pages/index/index", "style": { "navigationBarTitleText": "宠光" } },
+    { "path": "pages/post-publish/index", "style": { "navigationBarTitleText": "发布" } },
+    { "path": "pages/profile/index", "style": { "navigationBarTitleText": "我的" } },
+    { "path": "pages/login/index", "style": { "navigationBarTitleText": "登录" } },
+    { "path": "pages/register/index", "style": { "navigationBarTitleText": "注册" } },
+    { "path": "pages/post-detail/index", "style": { "navigationBarTitleText": "帖子详情" } },
+    { "path": "pages/search/index", "style": { "navigationBarTitleText": "搜索" } },
+    { "path": "pages/my-posts/index", "style": { "navigationBarTitleText": "我的发布" } },
+    { "path": "pages/my-collects/index", "style": { "navigationBarTitleText": "我的收藏" } },
+    { "path": "pages/my-likes/index", "style": { "navigationBarTitleText": "赞过" } },
+    { "path": "pages/messages/index", "style": { "navigationBarTitleText": "消息" } },
+    { "path": "pages/settings/index", "style": { "navigationBarTitleText": "设置" } },
+    { "path": "pages/settings/edit-nickname/index", "style": { "navigationBarTitleText": "修改昵称" } },
+    { "path": "pages/settings/edit-password/index", "style": { "navigationBarTitleText": "修改密码" } },
+    { "path": "pages/checkin/index", "style": { "navigationBarTitleText": "摇签签到" } },
+    { "path": "pages/points/index", "style": { "navigationBarTitleText": "积分中心" } }
+  ],
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#FFA500",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      { "pagePath": "pages/index/index", "text": "首页", "iconPath": "static/tabbar/home.svg", "selectedIconPath": "static/tabbar/home-active.svg" },
+      { "pagePath": "pages/post-publish/index", "text": "发布", "iconPath": "static/tabbar/publish.svg", "selectedIconPath": "static/tabbar/publish-active.svg" },
+      { "pagePath": "pages/profile/index", "text": "我的", "iconPath": "static/tabbar/profile.svg", "selectedIconPath": "static/tabbar/profile-active.svg" }
+    ]
+  },
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "PetGlow",
+    "navigationBarBackgroundColor": "#ffffff",
+    "backgroundColor": "#FFF9F0"
+  }
+}

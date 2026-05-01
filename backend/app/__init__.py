@@ -1,0 +1,1 @@
+"""Furever FastAPI application package."""

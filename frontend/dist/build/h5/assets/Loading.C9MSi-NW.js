@@ -1,0 +1,1 @@
+import{_ as s,o as a,c as o,w as e,b as n,d as t}from"./index-Du8zD5Zu.js";const d=s({},[["render",function(s,d){const r=t;return a(),o(r,{class:"loading"},{default:e(()=>[n("加载中...")]),_:1})}],["__scopeId","data-v-3eb31079"]]);export{d as L};

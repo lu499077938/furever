@@ -1,0 +1,1 @@
+import{q as t,R as o,T as e,g as s}from"./index-Dc5uI44e.js";const i=t("user",{state:()=>({token:s("token")||"",profile:null}),actions:{setLogin(t,o){this.token=t,this.profile=o,e("token",t)},setProfile(t){this.profile=t},logout(){this.token="",this.profile=null,o("token")}}});export{i as u};

@@ -1,0 +1,61 @@
+---
+description: 宠光（PetGlow）前端通用开发规范，适用于 uni-app + Vue3 项目所有文件，AI 生成代码必须严格遵守。
+globs: frontend/**/*.{vue,js,ts}
+---
+
+## 框架与语法规范
+
+- 所有页面和组件必须使用 Vue3 Composition API（`<script setup>` 语法），禁止使用 Options API。
+- 状态管理使用 Pinia，禁止使用 Vuex。
+- 禁止在 `<template>` 中写复杂逻辑，复杂计算必须提取为 `computed` 或函数。
+- 禁止在页面组件中直接调用 `uni.request`，必须通过 `src/api/` 下的封装函数调用。
+
+## 目录与文件规范
+
+- 页面文件放在 `src/pages/<page-name>/index.vue`，使用 kebab-case 目录名。
+- 公共组件放在 `src/components/`，组件文件名使用大驼峰（`PostCard.vue`）。
+- 可复用逻辑提取为 composable，放在 `src/composables/`，文件名以 `use` 开头（`useButtonLock.js`）。
+- 接口请求函数按模块拆分放在 `src/api/`，每个模块对应一个文件（`post.js`、`checkin.js`）。
+- 禁止在页面文件中直接写接口请求逻辑，必须封装到 `src/api/` 对应文件中。
+
+## 防二次点击 / 防误触规范（强制）
+
+- 所有涉及写操作的按钮（发布、评论、点赞、收藏、签到、登录、注册、修改密码等）必须使用 `useButtonLock` composable 管理状态。
+- 按钮在请求进行中必须设置 `disabled` 属性并显示 loading 状态，请求结束后自动恢复。
+- 禁止用简单的 `isLoading` 布尔值替代 `useButtonLock`，必须使用统一封装。
+- 搜索输入框必须使用 `src/utils/debounce.js` 进行 300ms 防抖处理。
+- 列表上拉加载更多必须设置 `isLoadingMore` 标志位，加载中时拒绝重复触发。
+- 摇签动画期间（约1.5秒）必须锁定签到按钮，动画结束后根据接口结果决定是否解锁。
+
+## 请求封装规范
+
+- 所有请求必须通过 `src/api/request.js` 的封装基类发起，禁止直接调用 `uni.request`。
+- 请求封装必须：自动携带 `Authorization: Bearer <token>` 请求头；统一处理 401（清除 Token，跳转登录页）；统一处理网络错误提示。
+- 维护 `pendingRequests` Map，同一接口（相同 URL + method）请求未完成时，拒绝重复发起并返回进行中的 Promise。
+- 发帖、评论等创建操作请求体中必须携带 `client_id`（使用 `src/utils/uuid.js` 生成）。
+
+## 参数与数据规范
+
+- 函数参数超过 2 个时，必须改为对象参数（`{ param1, param2, param3 }`）。
+- 禁止在组件 props 中使用 `any` 类型，必须明确定义类型。
+- 接口返回数据必须通过响应拦截器统一解构，页面中直接使用 `data` 字段，不重复判断 `code`。
+- 图片展示规范：列表页使用 `thumb_url`（缩略图），详情页使用 `url`（原图），禁止在列表中加载原图。
+
+## 页面与组件规范
+
+- 页面必须处理三种状态：loading（骨架屏或 Loading 组件）、empty（Empty 组件）、error（错误提示+重试按钮）。
+- 列表页必须实现下拉刷新（`onPullDownRefresh`）和上拉加载更多（`onReachBottom`）。
+- 禁止硬编码接口地址，所有 URL 通过 `src/api/` 封装函数调用。
+- 禁止在 `onMounted` 中直接写大量逻辑，提取为独立函数后调用。
+
+## 样式规范
+
+- 使用 `rpx` 单位适配不同屏幕，禁止使用 `px`（特殊情况除外）。
+- 颜色值统一在 `src/static/styles/variables.scss` 中定义为变量，禁止在组件中硬编码颜色值。
+- 禁止使用内联 style 设置复杂样式，使用 class 绑定。
+
+## 其他禁止项
+
+- 禁止在生产代码中留下 `console.log`（调试用 log 在提交前必须删除）。
+- 禁止生成"// TODO: 实现"的占位注释，必须给出完整实现。
+- 禁止省略错误处理，所有 `async/await` 必须有 `try/catch` 或通过请求封装统一处理。

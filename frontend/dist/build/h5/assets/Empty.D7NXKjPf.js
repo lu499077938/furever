@@ -1,0 +1,1 @@
+import{_ as t,o as s,c as a,w as e,b as p,t as o,d}from"./index-BSY8jS6o.js";const r=t({__name:"Empty",props:{text:{type:String,default:"暂无内容"}},setup:t=>(r,c)=>{const n=d;return s(),a(n,{class:"empty"},{default:e(()=>[p(o(t.text),1)]),_:1})}},[["__scopeId","data-v-ac6650fd"]]);export{r as E};

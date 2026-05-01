@@ -1,0 +1,1 @@
+import{C as o}from"./index-Dc5uI44e.js";const t=t=>o({url:"/notifications",method:"GET",data:t}),a=()=>o({url:"/notifications/unread-count",method:"GET"}),i=()=>o({url:"/notifications/read-all",method:"PUT"});export{t as n,i as r,a as u};

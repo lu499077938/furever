@@ -1,0 +1,154 @@
+openapi: 3.0.3
+info:
+  title: PetGlow API
+  version: 1.0.0
+servers:
+  - url: /api/v1
+paths:
+  /health:
+    get:
+      summary: 健康检查
+      responses:
+        '200':
+          description: ok
+  /auth/register:
+    post:
+      summary: 用户注册
+      responses:
+        '200':
+          description: 注册成功
+  /auth/login:
+    post:
+      summary: 用户登录
+      responses:
+        '200':
+          description: 登录成功
+  /users/me:
+    get:
+      summary: 获取当前用户信息
+      responses:
+        '200':
+          description: ok
+  /users/me/nickname:
+    put:
+      summary: 修改昵称
+      responses:
+        '200':
+          description: ok
+  /users/me/password:
+    put:
+      summary: 修改密码
+      responses:
+        '200':
+          description: ok
+  /upload/image:
+    post:
+      summary: 上传图片
+      responses:
+        '200':
+          description: ok
+  /posts:
+    get:
+      summary: 帖子列表
+      responses:
+        '200':
+          description: ok
+    post:
+      summary: 发布帖子
+      responses:
+        '200':
+          description: ok
+  /posts/search:
+    get:
+      summary: 搜索帖子
+      responses:
+        '200':
+          description: ok
+  /posts/{post_id}:
+    get:
+      summary: 帖子详情
+      responses:
+        '200':
+          description: ok
+    delete:
+      summary: 删除帖子
+      responses:
+        '200':
+          description: ok
+  /posts/{post_id}/like:
+    post:
+      summary: 点赞/取消点赞
+      responses:
+        '200':
+          description: ok
+  /posts/{post_id}/collect:
+    post:
+      summary: 收藏/取消收藏
+      responses:
+        '200':
+          description: ok
+  /posts/{post_id}/comments:
+    get:
+      summary: 评论列表
+      responses:
+        '200':
+          description: ok
+    post:
+      summary: 发表评论
+      responses:
+        '200':
+          description: ok
+  /notifications:
+    get:
+      summary: 消息列表
+      responses:
+        '200':
+          description: ok
+  /notifications/unread-count:
+    get:
+      summary: 未读数
+      responses:
+        '200':
+          description: ok
+  /notifications/read-all:
+    put:
+      summary: 全部已读
+      responses:
+        '200':
+          description: ok
+  /notifications/{notification_id}/read:
+    put:
+      summary: 单条已读
+      responses:
+        '200':
+          description: ok
+  /checkin:
+    post:
+      summary: 每日签到
+      responses:
+        '200':
+          description: ok
+  /checkin/status:
+    get:
+      summary: 签到状态
+      responses:
+        '200':
+          description: ok
+  /points:
+    get:
+      summary: 积分概览
+      responses:
+        '200':
+          description: ok
+  /points/logs:
+    get:
+      summary: 积分明细
+      responses:
+        '200':
+          description: ok
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

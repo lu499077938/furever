@@ -1,0 +1,1 @@
+import{r as s}from"./request.SSJ3EtCT.js";const e=()=>s({url:"/users/me",method:"GET"}),r=e=>s({url:"/users/me/nickname",method:"PUT",data:e}),a=e=>s({url:"/users/me/password",method:"PUT",data:e});export{a,e as m,r as u};

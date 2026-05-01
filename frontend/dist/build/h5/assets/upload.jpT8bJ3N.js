@@ -1,0 +1,1 @@
+import{A as e,B as a}from"./index-ffM8F_u_.js";function r(r){const t=e("token");return new Promise((e,o)=>{a({url:"http://127.0.0.1:8000/api/v1/upload/image",filePath:r,name:"file",header:t?{Authorization:`Bearer ${t}`}:{},success(a){const r=JSON.parse(a.data||"{}");0===r.code?e(r.data):o(new Error(r.msg||"上传失败"))},fail:o})})}export{r as u};

@@ -1,0 +1,1 @@
+import{r as a}from"./request.Djnl2sMI.js";const s=()=>a({url:"/users/me",method:"GET"}),r=s=>a({url:"/users/me/nickname",method:"PUT",data:s}),e=s=>a({url:"/users/me/password",method:"PUT",data:s}),t=s=>a({url:"/users/me/avatar",method:"PUT",data:{avatar:s}});export{r as a,e as b,s as m,t as u};

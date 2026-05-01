@@ -1,0 +1,294 @@
+/* 
+ * 全局 SCSS 变量 - 宠光 (PetGlow) 萌宠主题
+ * 设计风格: Claymorphism (软3D、可爱、圆润、泡泡感)
+ * 关键词: Soft 3D, chunky, playful, toy-like, bubbly
+ */
+
+// =====================================
+// 1. 颜色体系 (Colors) - 萌宠温暖配色
+// =====================================
+// 主色调：阳光橙 - 温暖、活力、可爱
+$primary-color: #F97316;
+$primary-color-light: #FFB380;
+$primary-color-dark: #EA580C;
+$primary-color-pale: #FFF7ED;
+
+// 辅助色：马卡龙色系 - 柔和、甜美
+$secondary-color: #FB923C;
+$secondary-color-light: #FED7AA;
+$secondary-color-pale: #FFF5EB;
+
+// 功能色
+$success-color: #4ADE80;
+$success-color-light: #BBF7D0;
+$success-color-pale: #F0FDF4;
+
+$warning-color: #FBBF24;
+$warning-color-light: #FDE68A;
+$warning-color-pale: #FFFBEB;
+
+$error-color: #F87171;
+$error-color-light: #FECACA;
+$error-color-pale: #FEF2F2;
+
+$info-color: #60A5FA;
+$info-color-light: #BFDBFE;
+$info-color-pale: #EFF6FF;
+
+// CTA色：信任蓝
+$cta-color: #2563EB;
+$cta-color-light: #93C5FD;
+$cta-color-pale: #DBEAFE;
+
+// 背景色
+$bg-color: #FFF7ED;
+$bg-color-warm: #FFFBF5;
+$bg-color-card: #FFFFFF;
+$bg-color-gray: #FEF7F0;
+$bg-color-muted: #FAFAF9;
+
+// 文字颜色
+$text-color-primary: #9A3412;
+$text-color-secondary: #7C2D12;
+$text-color-tertiary: #A16207;
+$text-color-placeholder: #C2410C;
+$text-color-inverse: #FFFFFF;
+$text-color-muted: #78716C;
+
+// 边框颜色
+$border-color: #FFEDD5;
+$border-color-light: #FFF7ED;
+$border-color-dark: #FED7AA;
+
+// 签到页（萌宠主题）
+$checkin-gradient-top: #FF9A56;
+$checkin-gradient-mid: #FFB380;
+$checkin-gradient-bottom: #FFF0E0;
+$checkin-card-border: #FF9A56;
+$checkin-ribbon-bg: #FF8C42;
+$checkin-cell-done: #FFE066;
+$checkin-cell-todo: #FFE8D4;
+$checkin-hero-muted: rgba(255, 255, 255, 0.35);
+
+// =====================================
+// 2. 圆角体系 (Border Radius) - 强调圆润可爱
+// =====================================
+$border-radius-xs: 8rpx;
+$border-radius-sm: 16rpx;
+$border-radius-base: 24rpx;
+$border-radius-lg: 32rpx;
+$border-radius-xl: 48rpx;
+$border-radius-2xl: 64rpx;
+$border-radius-full: 9999rpx;
+$border-radius-circle: 50%;
+
+// =====================================
+// 3. 阴影体系 (Box Shadow) - Claymorphism 软3D效果
+// =====================================
+// 外阴影 - 柔和浮起感
+$box-shadow-sm: 0 4rpx 12rpx rgba(249, 115, 22, 0.08);
+$box-shadow-base: 0 8rpx 24rpx rgba(249, 115, 22, 0.12);
+$box-shadow-lg: 0 16rpx 48rpx rgba(249, 115, 22, 0.16);
+$box-shadow-xl: 0 24rpx 64rpx rgba(249, 115, 22, 0.2);
+
+// 内阴影 - 凹陷/按压感
+$box-shadow-inner: inset 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
+$box-shadow-inner-sm: inset 0 2rpx 6rpx rgba(0, 0, 0, 0.04);
+
+// Claymorphism 双层阴影 (外阴影 + 内高光)
+$clay-shadow: 
+  0 8rpx 24rpx rgba(249, 115, 22, 0.15),
+  inset 0 2rpx 4rpx rgba(255, 255, 255, 0.8);
+
+$clay-shadow-hover: 
+  0 12rpx 32rpx rgba(249, 115, 22, 0.2),
+  inset 0 2rpx 4rpx rgba(255, 255, 255, 0.9);
+
+$clay-shadow-active: 
+  0 4rpx 12rpx rgba(249, 115, 22, 0.1),
+  inset 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+
+// 卡片阴影
+$card-shadow: 
+  0 4rpx 16rpx rgba(249, 115, 22, 0.08),
+  0 8rpx 32rpx rgba(249, 115, 22, 0.04);
+
+$card-shadow-hover: 
+  0 8rpx 24rpx rgba(249, 115, 22, 0.12),
+  0 16rpx 48rpx rgba(249, 115, 22, 0.08);
+
+// =====================================
+// 4. 间距体系 (Spacing)
+// =====================================
+$spacing-2xs: 4rpx;
+$spacing-xs: 8rpx;
+$spacing-sm: 16rpx;
+$spacing-base: 24rpx;
+$spacing-lg: 32rpx;
+$spacing-xl: 48rpx;
+$spacing-2xl: 64rpx;
+$spacing-3xl: 96rpx;
+
+// =====================================
+// 5. 字体体系 (Typography)
+// =====================================
+$font-size-2xs: 18rpx;
+$font-size-xs: 20rpx;
+$font-size-sm: 24rpx;
+$font-size-base: 28rpx;
+$font-size-lg: 32rpx;
+$font-size-xl: 36rpx;
+$font-size-2xl: 44rpx;
+$font-size-3xl: 56rpx;
+
+// 字重
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$font-weight-extrabold: 800;
+
+// 行高
+$line-height-tight: 1.25;
+$line-height-base: 1.5;
+$line-height-relaxed: 1.75;
+
+// 字体族（圆润可爱的字体）
+$font-family-base: 
+  "PingFang SC", 
+  "Hiragino Sans GB", 
+  "Microsoft YaHei", 
+  "微软雅黑", 
+  -apple-system, 
+  BlinkMacSystemFont, 
+  "Segoe UI", 
+  Roboto, 
+  "Helvetica Neue", 
+  Arial, 
+  sans-serif;
+
+// =====================================
+// 6. 动画体系 (Animation)
+// =====================================
+$transition-fast: 150ms ease-out;
+$transition-base: 200ms ease-out;
+$transition-slow: 300ms ease-out;
+$transition-bounce: 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+// 弹跳动画
+@keyframes bounce-in {
+  0% { transform: scale(0.9); opacity: 0; }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes bounce-press {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8rpx); }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+// =====================================
+// 7. 边框体系 (Border)
+// =====================================
+$border-width-thin: 2rpx;
+$border-width-base: 3rpx;
+$border-width-thick: 4rpx;
+
+// =====================================
+// 8. Z-index 层级
+// =====================================
+$z-index-dropdown: 100;
+$z-index-sticky: 200;
+$z-index-fixed: 300;
+$z-index-modal-backdrop: 400;
+$z-index-modal: 500;
+$z-index-popover: 600;
+$z-index-tooltip: 700;
+
+// =====================================
+// 9. Mixins (常用样式组合)
+// =====================================
+@mixin clay-card {
+  background: $bg-color-card;
+  border-radius: $border-radius-xl;
+  box-shadow: $clay-shadow;
+  border: $border-width-thick solid $border-color;
+}
+
+@mixin clay-button {
+  border-radius: $border-radius-full;
+  box-shadow: $clay-shadow;
+  transition: all $transition-base;
+  
+  &:active {
+    box-shadow: $clay-shadow-active;
+    transform: scale(0.98);
+  }
+}
+
+@mixin clay-input {
+  background: $bg-color-gray;
+  border-radius: $border-radius-lg;
+  border: $border-width-thick solid transparent;
+  box-shadow: $box-shadow-inner-sm;
+  transition: all $transition-base;
+  
+  &:focus-within {
+    background: $bg-color-card;
+    border-color: $primary-color-light;
+    box-shadow: 
+      0 0 0 6rpx rgba($primary-color, 0.15),
+      $box-shadow-base;
+  }
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin text-ellipsis($lines: 1) {
+  @if $lines == 1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  } @else {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $lines;
+    overflow: hidden;
+  }
+}
+
+@mixin safe-area-bottom {
+  padding-bottom: calc(#{$spacing-base} + env(safe-area-inset-bottom));
+}

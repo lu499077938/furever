@@ -1,0 +1,44 @@
+---
+description: 宠光（PetGlow）Pydantic Schema（DTO）定义规范，适用于 schemas 目录下所有文件。
+globs: backend/app/schemas/**/*.py
+---
+
+## Schema 文件组织
+
+- 所有 Schema 必须放在 `app/schemas/` 对应模块文件中。
+- 禁止在 Router、Service、Repository 文件内定义 Schema 类。
+- `app/schemas/common.py` 提供公共 Schema：`ApiResp[T]`（统一响应）、`PageResp[T]`（分页响应）。
+
+## 命名约定
+
+| 用途 | 命名规则 | 示例 |
+|------|---------|------|
+| 创建请求体 | `XxxCreateReq` | `PostCreateReq` |
+| 更新请求体 | `XxxUpdateReq` | `UpdateNicknameReq` |
+| 登录/操作请求体 | `XxxReq` | `LoginReq`, `RegisterReq` |
+| 单条响应 | `XxxResp` | `PostDetailResp`, `TokenResp` |
+| 列表项响应 | `XxxItemResp` | `PostItemResp`, `CommentItemResp` |
+| 分页响应 | `PageResp[XxxItemResp]` | `PageResp[PostItemResp]` |
+
+## 字段规范
+
+- 所有字段必须有类型注解，可选字段使用 `Optional[T] = None`。
+- 使用 `Field(...)` 添加校验和描述：
+  ```python
+  title: str = Field(..., min_length=1, max_length=50, description="帖子标题")
+  ```
+- 密码字段使用 `SecretStr` 类型，禁止在响应 Schema 中包含密码字段。
+- 时间字段统一使用 `datetime` 类型，序列化为 ISO 8601 字符串。
+- 图片 URL 字段：原图用 `url`，缩略图用 `thumb_url`，列表场景只返回 `thumb_url`。
+
+## 参数数量规则
+
+- 接口参数（Query 参数 + Body 参数合计）超过 2 个时，必须定义请求 Schema。
+- 单个参数（如只有 `post_id`）可以直接用 Path/Query 参数，无需 Schema。
+- 禁止将多个参数平铺在函数签名中传递给 Service，必须封装为 Schema 或 dataclass。
+
+## 响应字段精简原则
+
+- 列表接口响应（`XxxItemResp`）只包含列表展示所需字段，不返回详情字段。
+- 详情接口响应（`XxxDetailResp`）包含完整字段。
+- 禁止在响应中返回 `password_hash`、`is_deleted`、`created_by`、`updated_by` 等内部字段。
