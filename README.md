@@ -1,7 +1,7 @@
 # 宠光（PetGlow）项目业务与技术说明文档
 
 > 文档版本：v1.0  
-> 更新日期：2026-04-12
+> 更新日期：2026-05-01
 
 ---
 
@@ -96,9 +96,117 @@
 
 ---
 
-## 三、后端架构设计
+## 三、快速开始
 
-### 3.1 分层架构
+### 3.1 环境要求
+
+| 环境 | 版本要求 |
+|------|---------|
+| Python | 3.11+ |
+| Node.js | 16+ |
+| MySQL | 8.0+ |
+| npm/pnpm | 最新稳定版 |
+
+### 3.2 后端启动
+
+```bash
+# 1. 进入后端目录
+cd backend
+
+# 2. 创建虚拟环境（推荐）
+python -m venv venv
+
+# Windows 激活虚拟环境
+venv\Scripts\activate
+
+# Linux/Mac 激活虚拟环境
+source venv/bin/activate
+
+# 3. 安装依赖
+pip install -r requirements.txt
+
+# 4. 配置环境变量
+# 复制环境变量示例文件
+copy .env.example .env    # Windows
+cp .env.example .env      # Linux/Mac
+
+# 编辑 .env 文件，配置数据库连接等参数
+
+# 5. 启动开发服务器
+python run.py
+
+# 或使用 uvicorn 直接启动
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+```
+
+**后端服务启动后：**
+- API 地址：http://localhost:8000
+- API 文档：http://localhost:8000/docs
+- 健康检查：http://localhost:8000/api/v1/health
+
+### 3.3 前端启动
+
+```bash
+# 1. 进入前端目录
+cd frontend
+
+# 2. 安装依赖
+npm install
+# 或使用 pnpm
+pnpm install
+
+# 3. 开发模式启动
+
+# H5 开发模式
+npm run dev:h5
+
+# 微信小程序开发模式
+npm run dev:mp-weixin
+
+# 4. 构建生产版本
+
+# 构建 H5 版本
+npm run build:h5
+
+# 构建微信小程序版本
+npm run build:mp-weixin
+```
+
+**前端开发说明：**
+- H5 开发模式启动后，在浏览器打开 http://localhost:5173
+- 微信小程序开发模式启动后，使用微信开发者工具打开 `dist/dev/mp-weixin` 目录
+
+### 3.4 数据库初始化
+
+```bash
+# 1. 创建数据库
+mysql -u root -p
+CREATE DATABASE furever DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+# 2. 执行初始化脚本
+mysql -u root -p furever < backend/sql/init.sql
+
+# 3. 修改 .env 配置
+DATABASE_URL=mysql+pymysql://user:pass@localhost:3306/furever
+USE_MOCK_DB=false
+```
+
+### 3.5 Mock 模式开发
+
+项目支持 Mock 数据模式，无需配置数据库即可快速启动开发：
+
+```bash
+# 在 .env 中设置
+USE_MOCK_DB=true
+```
+
+Mock 模式下，所有数据操作在内存中进行，适合快速开发和测试。
+
+---
+
+## 四、后端架构设计
+
+### 4.1 分层架构
 
 后端采用经典的四层架构设计：
 
@@ -127,7 +235,7 @@
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### 3.2 目录结构
+### 4.2 目录结构
 
 ```
 backend/
@@ -193,7 +301,7 @@ backend/
 └── requirements.txt             # Python 依赖
 ```
 
-### 3.3 依赖注入设计
+### 4.3 依赖注入设计
 
 项目使用 FastAPI 的依赖注入系统实现解耦：
 
@@ -216,7 +324,7 @@ def get_current_user() -> dict          # 必须登录
 def get_current_user_optional() -> dict | None  # 可选登录
 ```
 
-### 3.4 Repository 模式
+### 4.4 Repository 模式
 
 通过抽象接口实现数据层解耦，支持 Mock 和真实数据库切换：
 
@@ -245,9 +353,9 @@ class DbUserRepository(UserRepository):
 
 ---
 
-## 四、数据库设计
+## 五、数据库设计
 
-### 4.1 表结构概览
+### 5.1 表结构概览
 
 | 表名 | 描述 | 核心字段 |
 |------|------|---------|
@@ -262,7 +370,7 @@ class DbUserRepository(UserRepository):
 | pet_points | 积分表 | id, user_id, total_points |
 | pet_points_log | 积分流水 | id, user_id, source, amount, remark |
 
-### 4.2 公共字段规范
+### 5.2 公共字段规范
 
 所有表必须包含以下公共字段：
 
@@ -275,9 +383,9 @@ class DbUserRepository(UserRepository):
 | updated_by | BIGINT | 更新人 ID，系统操作填 0 |
 | is_deleted | TINYINT(1) | 逻辑删除标记，0=正常，1=已删除 |
 
-### 4.3 表结构详情
+### 5.3 表结构详情
 
-#### 4.3.1 用户表 (pet_user)
+#### 5.3.1 用户表 (pet_user)
 
 ```sql
 CREATE TABLE pet_user (
@@ -295,7 +403,7 @@ CREATE TABLE pet_user (
 );
 ```
 
-#### 4.3.2 帖子表 (pet_post)
+#### 5.3.2 帖子表 (pet_post)
 
 ```sql
 CREATE TABLE pet_post (
@@ -318,7 +426,7 @@ CREATE TABLE pet_post (
 );
 ```
 
-#### 4.3.3 评论表 (pet_comment)
+#### 5.3.3 评论表 (pet_comment)
 
 ```sql
 CREATE TABLE pet_comment (
@@ -335,7 +443,7 @@ CREATE TABLE pet_comment (
 );
 ```
 
-#### 4.3.4 点赞表 (pet_like)
+#### 5.3.4 点赞表 (pet_like)
 
 ```sql
 CREATE TABLE pet_like (
@@ -352,7 +460,7 @@ CREATE TABLE pet_like (
 );
 ```
 
-#### 4.3.5 收藏表 (pet_collect)
+#### 5.3.5 收藏表 (pet_collect)
 
 ```sql
 CREATE TABLE pet_collect (
@@ -369,7 +477,7 @@ CREATE TABLE pet_collect (
 );
 ```
 
-#### 4.3.6 好运签池表 (pet_fortune)
+#### 5.3.6 好运签池表 (pet_fortune)
 
 ```sql
 CREATE TABLE pet_fortune (
@@ -386,7 +494,7 @@ CREATE TABLE pet_fortune (
 );
 ```
 
-#### 4.3.7 签到记录表 (pet_checkin)
+#### 5.3.7 签到记录表 (pet_checkin)
 
 ```sql
 CREATE TABLE pet_checkin (
@@ -405,7 +513,7 @@ CREATE TABLE pet_checkin (
 );
 ```
 
-#### 4.3.8 通知表 (pet_notification)
+#### 5.3.8 通知表 (pet_notification)
 
 ```sql
 CREATE TABLE pet_notification (
@@ -424,7 +532,7 @@ CREATE TABLE pet_notification (
 );
 ```
 
-#### 4.3.9 积分表 (pet_points)
+#### 5.3.9 积分表 (pet_points)
 
 ```sql
 CREATE TABLE pet_points (
@@ -440,7 +548,7 @@ CREATE TABLE pet_points (
 );
 ```
 
-#### 4.3.10 积分流水表 (pet_points_log)
+#### 5.3.10 积分流水表 (pet_points_log)
 
 ```sql
 CREATE TABLE pet_points_log (
@@ -458,7 +566,7 @@ CREATE TABLE pet_points_log (
 );
 ```
 
-### 4.4 设计规范
+### 5.4 设计规范
 
 1. **表名规范**：使用 `pet_` 前缀，单数命名
 2. **逻辑删除**：所有删除操作设置 `is_deleted=1`，禁止物理删除
@@ -470,11 +578,11 @@ CREATE TABLE pet_points_log (
 
 ---
 
-## 五、API 接口设计
+## 六、API 接口设计
 
-### 5.1 接口规范
+### 6.1 接口规范
 
-#### 5.1.1 基础信息
+#### 6.1.1 基础信息
 
 | 项目 | 规范 |
 |------|------|
@@ -483,7 +591,7 @@ CREATE TABLE pet_points_log (
 | 数据格式 | JSON |
 | 编码 | UTF-8 |
 
-#### 5.1.2 认证方式
+#### 6.1.2 认证方式
 
 ```
 Authorization: Bearer <token>
@@ -493,7 +601,7 @@ Authorization: Bearer <token>
 - Token 有效期：7 天
 - Token 中包含用户 ID 和密码版本号
 
-#### 5.1.3 统一响应格式
+#### 6.1.3 统一响应格式
 
 **成功响应：**
 ```json
@@ -513,7 +621,7 @@ Authorization: Bearer <token>
 }
 ```
 
-#### 5.1.4 分页参数
+#### 6.1.4 分页参数
 
 ```
 GET /api/v1/posts?page=1&page_size=20
@@ -531,9 +639,9 @@ GET /api/v1/posts?page=1&page_size=20
 }
 ```
 
-### 5.2 接口列表
+### 6.2 接口列表
 
-#### 5.2.1 认证模块 (/auth)
+#### 6.2.1 认证模块 (/auth)
 
 | 方法 | 路径 | 描述 | 认证 |
 |------|------|------|------|
@@ -574,7 +682,7 @@ GET /api/v1/posts?page=1&page_size=20
 }
 ```
 
-#### 5.2.2 用户模块 (/users)
+#### 6.2.2 用户模块 (/users)
 
 | 方法 | 路径 | 描述 | 认证 |
 |------|------|------|------|
@@ -587,7 +695,7 @@ GET /api/v1/posts?page=1&page_size=20
 | GET | /users/me/likes | 我的点赞 | 是 |
 | POST | /users/{target_user_id}/follow | 关注/取关用户 | 是 |
 
-#### 5.2.3 帖子模块 (/posts)
+#### 6.2.3 帖子模块 (/posts)
 
 | 方法 | 路径 | 描述 | 认证 |
 |------|------|------|------|
@@ -607,7 +715,7 @@ GET /api/v1/posts?page=1&page_size=20
 }
 ```
 
-#### 5.2.4 评论模块 (/posts/{post_id}/comments)
+#### 6.2.4 评论模块 (/posts/{post_id}/comments)
 
 | 方法 | 路径 | 描述 | 认证 |
 |------|------|------|------|
@@ -620,14 +728,14 @@ GET /api/v1/posts?page=1&page_size=20
 | POST | /posts/{post_id}/comments/{comment_id}/like | 点赞评论 | 是 |
 | GET | /posts/{post_id}/comments/{comment_id}/likes | 点赞用户列表 | 否 |
 
-#### 5.2.5 互动模块 (/posts/{post_id})
+#### 6.2.5 互动模块 (/posts/{post_id})
 
 | 方法 | 路径 | 描述 | 认证 |
 |------|------|------|------|
 | POST | /posts/{post_id}/like | 点赞/取消点赞 | 是 |
 | POST | /posts/{post_id}/collect | 收藏/取消收藏 | 是 |
 
-#### 5.2.6 签到模块 (/checkin)
+#### 6.2.6 签到模块 (/checkin)
 
 | 方法 | 路径 | 描述 | 认证 |
 |------|------|------|------|
@@ -650,14 +758,14 @@ GET /api/v1/posts?page=1&page_size=20
 }
 ```
 
-#### 5.2.7 积分模块 (/points)
+#### 6.2.7 积分模块 (/points)
 
 | 方法 | 路径 | 描述 | 认证 |
 |------|------|------|------|
 | GET | /points | 积分总览 | 是 |
 | GET | /points/logs | 积分流水 | 是 |
 
-#### 5.2.8 通知模块 (/notifications)
+#### 6.2.8 通知模块 (/notifications)
 
 | 方法 | 路径 | 描述 | 认证 |
 |------|------|------|------|
@@ -666,7 +774,7 @@ GET /api/v1/posts?page=1&page_size=20
 | PUT | /notifications/read-all | 全部已读 | 是 |
 | PUT | /notifications/{id}/read | 标记已读 | 是 |
 
-#### 5.2.9 上传模块 (/upload)
+#### 6.2.9 上传模块 (/upload)
 
 | 方法 | 路径 | 描述 | 认证 |
 |------|------|------|------|
@@ -684,7 +792,7 @@ GET /api/v1/posts?page=1&page_size=20
 }
 ```
 
-#### 5.2.10 健康检查
+#### 6.2.10 健康检查
 
 | 方法 | 路径 | 描述 | 认证 |
 |------|------|------|------|
@@ -692,9 +800,9 @@ GET /api/v1/posts?page=1&page_size=20
 
 ---
 
-## 六、前端架构设计
+## 七、前端架构设计
 
-### 6.1 目录结构
+### 7.1 目录结构
 
 ```
 frontend/
@@ -747,7 +855,7 @@ frontend/
 └── package.json                 # 依赖配置
 ```
 
-### 6.2 页面路由配置
+### 7.2 页面路由配置
 
 ```json
 {
@@ -779,7 +887,7 @@ frontend/
 }
 ```
 
-### 6.3 请求封装设计
+### 7.3 请求封装设计
 
 ```javascript
 // api/request.js
@@ -820,7 +928,7 @@ export function apiRequest(options) {
 }
 ```
 
-### 6.4 状态管理设计
+### 7.4 状态管理设计
 
 ```javascript
 // stores/user.js
@@ -851,9 +959,9 @@ export const useUserStore = defineStore('user', {
 
 ---
 
-## 七、安全设计
+## 八、安全设计
 
-### 7.1 密码安全
+### 8.1 密码安全
 
 - 使用 **bcrypt** 进行密码哈希
 - 自动加盐，防止彩虹表攻击
@@ -870,7 +978,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     return bcrypt.checkpw(plain_password.encode("utf-8"), hashed_password.encode("utf-8"))
 ```
 
-### 7.2 JWT 认证
+### 8.2 JWT 认证
 
 ```python
 # Token 生成
@@ -888,14 +996,14 @@ def decode_access_token(token: str) -> dict:
     return jwt.decode(token, settings.app_secret_key, algorithms=["HS256"])
 ```
 
-### 7.3 接口安全
+### 8.3 接口安全
 
 1. **认证保护**：敏感接口需要 Token 认证
 2. **幂等性保证**：创建操作携带 `client_id` 防重复
 3. **参数校验**：使用 Pydantic 进行严格参数验证
 4. **请求防重**：前端对相同请求进行去重
 
-### 7.4 图片上传安全
+### 8.4 图片上传安全
 
 ```python
 # 文件类型校验
@@ -915,9 +1023,9 @@ def validate_upload_file(file: UploadFile, content: bytes):
 
 ---
 
-## 八、环境配置
+## 九、环境配置
 
-### 8.1 环境变量
+### 9.1 环境变量
 
 ```bash
 # 应用配置
@@ -934,7 +1042,7 @@ UPLOAD_DIR=./uploads
 STATIC_BASE_URL=http://localhost:8000/static/uploads
 ```
 
-### 8.2 开发环境
+### 9.2 开发环境
 
 ```bash
 # 安装依赖
@@ -973,7 +1081,7 @@ autorestart=true
 
 ---
 
-## 九、技术亮点总结
+## 十、技术亮点总结
 
 | 特性 | 说明 |
 |------|------|
@@ -988,9 +1096,9 @@ autorestart=true
 
 ---
 
-## 十、附录
+## 十一、附录
 
-### 10.1 完整 API 端点列表
+### 11.1 完整 API 端点列表
 
 | 模块 | 方法 | 端点 | 描述 |
 |------|------|------|------|
@@ -1029,7 +1137,7 @@ autorestart=true
 | 上传 | POST | /api/v1/upload/image | 上传图片 |
 | 健康 | GET | /api/v1/health | 健康检查 |
 
-### 10.2 数据库 ER 关系
+### 11.2 数据库 ER 关系
 
 ```
 pet_user ──┬── pet_post ──┬── pet_comment
